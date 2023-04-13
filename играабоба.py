@@ -27,12 +27,32 @@ changeX=0
 FPS = 60
 clock = pygame.time.Clock()
 # O()
+
+def get_field():
+    field = []
+
+    for i in range(20):
+        field.append([0] * 10)
+
+    return field
+
 while 1:
     # проверяем события, которые произошли (если они были)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
             # iboba.x+=50
+
+    # заливаем главный фон черным цветом
+    mainScreen.fill(mainScreenColor)
+
+
+    # risuem pole
+    field = get_field()
+    for i in range(len(field)):
+        for j in range(len(field[i])):
+            pygame.draw.rect(mainScreen, (10, 150, 180), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         changeX = -1 * SPEED
@@ -50,8 +70,8 @@ while 1:
         iboba.y+=50
         j=0
     j+=1
-    # заливаем главный фон черным цветом
-    mainScreen.fill(mainScreenColor)
+
+
     # for i in range(len(a)):
     mainScreen.blit(aboba,iboba)
     pygame.display.flip()
