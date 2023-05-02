@@ -227,11 +227,11 @@ def runTetris():
 
         if time.time() - last_fall > fall_speed: # свободное падение фигуры            
             if not checkPos(cup, fallingFig, adjY=1): # проверка "приземления" фигуры
-                addToCup(cup, fallingFig) # фигура приземлилась, добавляем ее в содержимое стакана
+                addToCup(cup, fallingFig) # фигура приземлилась, добавляем ее в содержимое стаканаsss
                 points += clearCompleted(cup)
                 level, fall_speed = calcSpeed(points)
                 fallingFig = None
-            else: # фигура пока не приземлилась, продолжаем движение вниз
+            else: # фигура пока не приземлилась, продолжаем движение вниз]]][][][][][]
                 fallingFig['y'] += 1
                 last_fall = time.time()
 
@@ -348,7 +348,7 @@ def isCompleted(cup, y):
 
 
 def clearCompleted(cup):
-    # Удаление заполенных рядов и сдвиг верхних рядов вниз
+    # Удаление заполенных рядов и сдвиг верхних рядов вниз      jjjggttgtgttggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
     removed_lines = 0
     y = cup_h - 1 
     while y >= 0:
