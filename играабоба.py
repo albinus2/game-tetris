@@ -87,7 +87,11 @@ while 1:
             # iboba.x+=50
         # if event.type==pygame.KEYDOWN:
         #     if event.key==pygame.K_UP:
+<<<<<<< HEAD
         #         a['rotation']=ra/gjjhptjpfhps[dkfpskdfpksd[444kokrpPPeppeepndom.randint(0, len([shape]) - 1)
+=======
+        #         a['rotation']=random.randint(0, len([shape]) - 1)
+>>>>>>> 79781f4bf26d51bb3e7a575b35480fd98c75c108
 
     # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
