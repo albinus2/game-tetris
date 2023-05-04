@@ -3,10 +3,132 @@ import random
 import pygame_menu
 pygame.init()
 from time import *
-
 def start_the_game():
-    global ismenu
+    pass
+# цвета
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+WHITE = (255, 255, 255)
+BLUE=(0,0,255)
+AMOGUS=(0,255,255)
+SPEED = 10
+changeX = 0
 
+# настройки главного экрана
+WIDTH = 1920
+HEIGHT = 1080
+mainScreen = pygame.display.set_mode((WIDTH, HEIGHT),pygame.FULLSCREEN)
+mainScreenColor = WHITE
+pygame.display.set_caption("Моя игра")
+
+# число кадров в секунду
+FPS = 60
+clock = pygame.time.Clock()
+bst1=False
+bst2=False
+bst3=False
+vel = 5
+jump = False
+jumpCount = 0
+jumpMax = 25
+onGround = True
+onPlatform = False
+schet=0
+# block2 = pygame.Surface((100, 100))
+manjump = pygame.image.load('man_jump.png')
+manstand = pygame.image.load('man_stand.png')
+manr = pygame.image.load('man_walk.png')
+manl = manr.copy()
+manr = pygame.transform.flip(manl, True, False)
+boost1=pygame.Surface((30, 30))
+boost1.fill(GREEN)
+boost2=pygame.Surface((30,30))
+boost2.fill(BLACK)
+boost3=pygame.Surface((30,30))
+boost3.fill(AMOGUS)
+boosts1=[]
+boosts2=[]
+boosts3=[]
+boostrect1=boost1.get_rect()
+boostrect2=boost2.get_rect()
+boostrect3=boost3.get_rect()
+boostrect1.centerx = random.randint(0, WIDTH-100)
+boostrect1.centery = random.randint(0, HEIGHT-100)
+boostrect2.centerx = random.randint(0, WIDTH-100)
+boostrect2.centery = random.randint(0,HEIGHT-100)
+boostrect3.centerx = random.randint(0, WIDTH-100)
+boostrect3.centery = random.randint(0,HEIGHT-100)
+man = manstand
+manrect = manr.get_rect()
+manrect.bottom = HEIGHT//2
+manrect.left = WIDTH//2
+schet2=0
+schet3=0
+schet4=0
+schet5=0
+platform = pygame.image.load('кирпич шоколадка small.png')
+surface = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
+def start_the_game():
+    pass
+def menu():
+    menu = pygame_menu.Menu('Welcome', 1280, 720,
+                        theme=pygame_menu.themes.THEME_BLUE)
+
+    menu.add.text_input('Name :', default='John Doe')
+    menu.add.button('Play', start_the_game)
+    menu.add.button('Quit', pygame_menu.events.EXIT)
+
+    menu.mainloop(surface)
+    menu()
+# platform = pygame.Surface((250, 100))
+foods=[]
+boosts1.append(boost1)
+boosts2.append(boost2)
+boosts3.append(boost3)
+foodblock = pygame.Surface((20, 20))
+foodblock.fill(RED)
+# массив rect'ов для еды
+platforms = [
+    # platform.get_rect(left = 0, bottom = HEIGHT - 200)
+]
+
+map =  [
+    '***************************************',
+    '*                                     *',
+    '*                                     *',
+    '*                   ***               *',
+    '*                                     *',
+    '*                                ******',
+    '*                                     *',
+    '*         *****                       *',
+    '*                                     *',
+    '*                                     *',
+    '*                       ***           *',
+    '*                                     *',
+    '*            **                       *',
+    '*                                     *',
+    '*****                                 *',
+    '*                                     *',
+    '*          ******                 *****',
+    '*                                     *',
+    '*                                     *',
+    '*                                     *',
+    '*                                     *',
+    '***************************************'
+]
+
+while 1:
+    # проверяем события, которые произошли (если они были)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if not jump and event.key == pygame.K_SPACE:
+                jump = True
+                jumpCount = jumpMax
+                onGround = False
+                onPlatform = False
     f1 = pygame.font.SysFont("Comic  sans", 70)
     f2 = pygame.font.SysFont("Comic  sans", 70)
     score="ваш счет:"+str(schet2)
@@ -42,7 +164,7 @@ def start_the_game():
         changeX = -1 * SPEED
         man = manl
     if keys[pygame.K_ESCAPE]:
-        menu.enable()
+        menu()
     if keys[pygame.K_RIGHT]:
         changeX = SPEED
         man = manr
@@ -187,142 +309,6 @@ def start_the_game():
 
     # рисуем змею
     mainScreen.blit(man, manrect)
-
-def switchMenuToGame():
-    menu.disable()
-
-# цвета
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-WHITE = (255, 255, 255)
-BLUE=(0,0,255)
-AMOGUS=(0,255,255)
-
-SPEED = 10
-changeX = 0
-
-# настройки главного экрана
-WIDTH = 1920
-HEIGHT = 1080
-mainScreen = pygame.display.set_mode((WIDTH, HEIGHT),pygame.FULLSCREEN)
-mainScreenColor = WHITE
-pygame.display.set_caption("Моя игра")
-
-# число кадров в секунду
-FPS = 60
-clock = pygame.time.Clock()
-bst1=False
-bst2=False
-bst3=False
-vel = 5
-jump = False
-jumpCount = 0
-jumpMax = 25
-onGround = True
-onPlatform = False
-schet=0
-# block2 = pygame.Surface((100, 100))
-manjump = pygame.image.load('man_jump.png')
-manstand = pygame.image.load('man_stand.png')
-manr = pygame.image.load('man_walk.png')
-manl = manr.copy()
-manr = pygame.transform.flip(manl, True, False)
-boost1=pygame.Surface((30, 30))
-boost1.fill(GREEN)
-boost2=pygame.Surface((30,30))
-boost2.fill(BLACK)
-boost3=pygame.Surface((30,30))
-boost3.fill(AMOGUS)
-boosts1=[]
-boosts2=[]
-boosts3=[]
-boostrect1=boost1.get_rect()
-boostrect2=boost2.get_rect()
-boostrect3=boost3.get_rect()
-boostrect1.centerx = random.randint(0, WIDTH-100)
-boostrect1.centery = random.randint(0, HEIGHT-100)
-boostrect2.centerx = random.randint(0, WIDTH-100)
-boostrect2.centery = random.randint(0,HEIGHT-100)
-boostrect3.centerx = random.randint(0, WIDTH-100)
-boostrect3.centery = random.randint(0,HEIGHT-100)
-man = manstand
-manrect = manr.get_rect()
-manrect.bottom = HEIGHT//2
-manrect.left = WIDTH//2
-schet2=0
-schet3=0
-schet4=0
-schet5=0
-
-platform = pygame.image.load('кирпич шоколадка small.png')
-
-# platform = pygame.Surface((250, 100))
-foods=[]
-boosts1.append(boost1)
-boosts2.append(boost2)
-boosts3.append(boost3)
-foodblock = pygame.Surface((20, 20))
-foodblock.fill(RED)
-# массив rect'ов для еды
-platforms = [
-    # platform.get_rect(left = 0, bottom = HEIGHT - 200)
-]
-surface = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
-
-map =  [
-    '***************************************',
-    '*                                     *',
-    '*                                     *',
-    '*                   ***               *',
-    '*                                     *',
-    '*                                ******',
-    '*                                     *',
-    '*         *****                       *',
-    '*                                     *',
-    '*                                     *',
-    '*                       ***           *',
-    '*                                     *',
-    '*            **                       *',
-    '*                                     *',
-    '*****                                 *',
-    '*                                     *',
-    '*          ******                 *****',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '***************************************'
-]
-
-menu = pygame_menu.Menu('Welcome', 1280, 720,
-                    theme=pygame_menu.themes.THEME_BLUE)
-
-menu.add.text_input('Name :', default='John Doe')
-menu.add.button('Play', switchMenuToGame)
-menu.add.button('Quit', pygame_menu.events.EXIT)
-
-menu.enable()
-
-while 1:
-    events = pygame.event.get()
-    # проверяем события, которые произошли (если они были)
-    for event in events:
-        if event.type == pygame.QUIT:
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if not jump and event.key == pygame.K_SPACE:
-                jump = True
-                jumpCount = jumpMax
-                onGround = False
-                onPlatform = False
-    
-    print(menu.is_enabled())
-    if menu.is_enabled():
-        menu.update(events)
-        menu.draw(mainScreen)
-    else:
-        start_the_game()
 
     pygame.display.flip()
     clock.tick(FPS)
