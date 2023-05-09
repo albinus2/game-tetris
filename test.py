@@ -362,7 +362,7 @@ def clearCompleted(cup):
         else:
             y -= 1 
     return removed_lines
-
+# fdhgjghjdfjgffdjjfjkfgdkjgfdjkfgjkfdjjgkfjkkjgjkjkgjkdfgjjgsdfgjljglkjfslkjgfskjlkjlglkjs
 
 def convertCoords(block_x, block_y):
     return (side_margin + (block_x * block)), (top_margin + (block_y * block))

@@ -1,12 +1,6 @@
 import pygame, sys, random
 pygame.init()
-
-
-# цвета1
-
 pov=0
-# цвета
-
 BLACK = (0, 0, 0)
 a=[]
 b=[]
@@ -21,19 +15,10 @@ HEIGHT = 1000
 mainScreen = pygame.display.set_mode((WIDTH, HEIGHT))
 mainScreenColor = BLACK
 pygame.display.set_caption("Моя игра")
-# def O():
-# aboba=pygame.Surface((block,block))
-# aboba.fill(noBLACK)
-# a.append(aboba)
-# iboba=aboba.get_rect()
-# iboba.x=100
-# iboba.y=10
-# b.append(iboba)j
-# b.append(iboba)
 def incupcleva(x):
     return x >= 0
 def incupcpravo(x):
-    return x-2 < cup_w
+    return x < cup_w
 def incupniz(y):
     return y <cup_h
 # число кадров в секунду
@@ -144,8 +129,6 @@ def yorn(ms, y):
         if ms[x][y] == '0':
             return False
     return True
-
-
 def otciska(ms):
     l = 0
     y = cup_h - 1 
@@ -191,31 +174,20 @@ def masiv(mas, fig):
     a['y']=0
 a=getNewFig()
 field = get_field()
+#jfsdkjdj
 while 1:
     poc=20
-    # проверяем события, которые произошли (если они были)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-            # iboba.x+=50
-        # if event.type==pygame.KEYDOWN:
-        #     if event.key==pygame.K_UP:
-                # a['rotation']=random.randint(0, len([shape]) - 1)
-
-    # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
-    
-    # risuem pole
-    
     for i in range(len(field)):
         for j in range(len(field[i])):
             if field[i][j]=='0':
                 pygame.draw.rect(mainScreen, (10, 150, 180), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
             if field[i][j]=='1':
                 pygame.draw.rect(mainScreen, (255, 255, 255), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
-
     keys = pygame.key.get_pressed()
-    
     if incupcleva((a['x'])//block):
         if keys[pygame.K_LEFT]:
             if dviz>20:
@@ -260,8 +232,6 @@ while 1:
                 a=getNewFig()
                 ppppppp=0
     # otciska(field)
-
-
     pov+=1
     po+=1
     figura(a)
