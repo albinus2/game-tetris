@@ -188,7 +188,7 @@ while 1:
             if field[i][j]=='1':
                 pygame.draw.rect(mainScreen, (255, 255, 255), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
     keys = pygame.key.get_pressed()
-    if incupcleva((a['x'])//block):
+    if incupcleva((a['x'])//block-1):
         if keys[pygame.K_LEFT]:
             if dviz>20:
                 a['x'] =a['x']+ (-1*SPEED)
@@ -208,11 +208,30 @@ while 1:
                 else:
                     a['rotation']+=1
             pov=0
-    if incupcpravo((a['x'])//block-4):
-        if keys[pygame.K_RIGHT]:
-            if dviz>20:
-                a['x'] +=SPEED
-                dviz=0
+    if (a['shape']==']' and (a['rotation']==0 or a['rotation']==2)) or a['shape']=='O' or (a['shape']=='T' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='L' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3))   or (a['shape']=='J' and a['rotation']==1) or (a['shape']=='S' and a['rotation']==1) or (a['shape']=='Z' and a['rotation']==1):
+        if incupcpravo((a['x'])//block+2):
+            if keys[pygame.K_RIGHT]:
+                if dviz>20:
+                    a['x'] +=SPEED
+                    dviz=0
+    if a['shape']=='I' and a['rotation']==0:
+        if incupcpravo((a['x'])//block+1):
+            if keys[pygame.K_RIGHT]:
+                if dviz>20:
+                    a['x'] +=SPEED
+                    dviz=0
+    elif a['shape']=='I' and a['rotation']==1:
+        if incupcpravo((a['x'])//block+4):
+            if keys[pygame.K_RIGHT]:
+                if dviz>20:
+                    a['x'] +=SPEED
+                    dviz=0
+    else:
+        if incupcpravo((a['x'])//block+3):
+            if keys[pygame.K_RIGHT]:
+                if dviz>20:
+                    a['x'] +=SPEED
+                    dviz=0
     dviz+=1
     if keys[pygame.K_DOWN]:
         poc=5
@@ -225,10 +244,7 @@ while 1:
             if not incupniz(a['y']//block+j) or field[a['y']//block+j][a['x']//block]=='1':
                 masiv(field,a)
                 ppppppp+=1
-            if ppppppp>1 and a['shape']!=']':
-                a=getNewFig()
-                ppppppp=0
-            if ppppppp>1 and a['shape']==']':
+            if ppppppp!=0:
                 a=getNewFig()
                 ppppppp=0
     # otciska(field)
