@@ -5,8 +5,10 @@ BLACK = (0, 0, 0)
 a=[]
 b=[]
 po=0
+endus=False
 noBLACK=(255,255,255)
 SPEED=50
+end=True
 cup_w,cup_h,block=10,20,50
 # настройки главного экрана
 WIDTH = 500
@@ -118,31 +120,29 @@ figur={ 'I':[  ['10000',
                ['00000',
                 '00000',
                 '11100',
-                '10100']]}
+                '10100']]
+                }
 def get_field():
     field = []
     for i in range(cup_h):
         field.append(['0'] * cup_w)
     return field
-def yorn(ms, y):
-    for x in range(cup_w-1):
-        if ms[x][y] == '0':
-            return False
-    return True
-def otciska(ms):
-    l = 0
-    y = cup_h - 1 
-    while y >= 0:
-        if yorn(ms, y):
-           for y in range(y, 0, -1):
-                for x in range(cup_w):
-                    ms[x][y] = ms[x][y-1]
-           for x in range(cup_w):
-                ms[x][0] = '0'
-           l += 1
-        else:
-            y -= 1 
-    return l
+def endgame():
+    end=False
+    i=0
+    while i<90:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+        mainScreen.fill((10, 150, 180))
+        s1=pygame.font.SysFont('Comic Sans MS',60)
+        t1=s1.render('U lose!!!',False,(0,0,0))
+        mainScreen.blit(t1,(150,400))
+        i+=1
+        pygame.display.flip()
+        clock.tick(60)
+    return end
+
 def getNewFig():
     # возвращает новую фигуру со случайным цветом и углом поворота
     shape = random.choice(list(figur.keys()))
@@ -172,10 +172,16 @@ def masiv(mas, fig):
                 mas[ynew].pop(x+(a['x'])//block)
                 mas[ynew].insert(x+(a['x'])//block,'1')
     a['y']=0
+def masiva(mas,y,x,a,ya,xa):
+    # print(a['shape']['rotation'][ya][xa])
+    if figur[a['shape']][a['rotation']][ya][xa]=='1':
+        mas[y-1].pop(xa+a['x']//block)
+        mas[y-1].insert(xa+a['x']//block,'1')
+
 a=getNewFig()
 field = get_field()
 #jfsdkjdj
-while 1:
+while end:
     poc=20
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -195,18 +201,41 @@ while 1:
                 dviz=0
     if keys[pygame.K_UP]:
         if pov>10:
-            if a['shape']=='I' or a['shape']=='S' or a['shape']=='Z':
-                if a['rotation']==1:
-                    a['rotation']=0
+            if a['shape']=='I' or a['shape']=='S' or (a['shape']=='Z'):
+                if a['shape']=='I':
+                    if a['rotation']==1:
+                        a['rotation']=0
+                    else:
+                        a['rotation']+=1
+                        if a['x']>=350:
+                            a['x']=300
+
+                        
                 else:
-                    a['rotation']+=1
+                    if a['rotation']==1:
+                        a['rotation']=0
+                        if a['x']==400:
+                            a['x']=350
+                    else:
+                        a['rotation']+=1
             elif a['shape']=='O':
                 abobobbb=1
-            else:
-                if a['rotation']>2:
+            elif a['shape']==']':
+                if a['rotation']==3:
                     a['rotation']=0
                 else:
                     a['rotation']+=1
+                if a['rotation']==1 or a['rotation']==3:
+                    if a['x']==400:
+                      a['x']=350
+            else:
+                if a['rotation']==3:
+                    a['rotation']=0
+                else:
+                    a['rotation']+=1
+                if a['rotation']==0 or a['rotation']==2:
+                    if a['x']==400:
+                        a['x']=350
             pov=0
     if (a['shape']==']' and (a['rotation']==0 or a['rotation']==2)) or a['shape']=='O' or (a['shape']=='T' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='L' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3))   or (a['shape']=='J' and a['rotation']==1) or (a['shape']=='S' and a['rotation']==1) or (a['shape']=='Z' and a['rotation']==1):
         if incupcpravo((a['x'])//block+2):
@@ -241,15 +270,34 @@ while 1:
             po=0
     for i in range(fig_w):
         for j in range(fig_h):
+            # print(i,j)
             if not incupniz(a['y']//block+j) or field[a['y']//block+j][a['x']//block]=='1':
-                masiv(field,a)
-                ppppppp+=1
-            if ppppppp!=0:
+                masiva(field,a['y']//block+j,a['x']//block,a,j,i)
+                ppppppp=1
+    if ppppppp!=0:
+        for h in range(len(field[1])-1):
+            if not field[2][h-1]=='1':
                 a=getNewFig()
                 ppppppp=0
-    # otciska(field)
+                endus=0
+            else:
+                endus=True
+    url=0
+    ppppppp=0
+    
+    for i in range(len(field)):
+        for j in range(cup_w):
+            if field[i-1]==['1']*10:
+                for pushDownY in range(cup_h, 0, -1):
+                    for x in range(cup_w):
+                        field[pushDownY-1][x-1] = field[pushDownY-2][x-1]
+                for x in range(cup_w):
+                        field[0][x-1] = '0'
+                url += 1
     pov+=1
     po+=1
     figura(a)
+    if endus==True:
+        end=endgame()
     pygame.display.flip()
     clock.tick(60)
