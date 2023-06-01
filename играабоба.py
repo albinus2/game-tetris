@@ -1,4 +1,5 @@
 import pygame, sys, random
+import pygame_menu
 pygame.init()
 pov=0
 BLACK = (0, 0, 0)
@@ -24,11 +25,21 @@ def incupcpravo(x):
 def incupniz(y):
     return y <cup_h
 # число кадров в секунду
+surface = pygame.display.set_mode((500, 1000))
+def menu():
+    menu = pygame_menu.Menu('Pause', 500, 1000,
+                        theme=pygame_menu.themes.THEME_ORANGE)
+    menu.add.button('Play', start_the_game)
+    menu.add.button('Quit', pygame_menu.events.EXIT)
+
+    menu.mainloop(surface)
+    menu()
 FPS = 60
 clock = pygame.time.Clock()
 dviz=0
 colors = ((0, 0, 225), (0, 225, 0), (225, 0, 0), (225, 225, 0))
 fig_w,fig_h=5,4
+#база фигур
 figur={ 'I':[  ['10000',
                 '10000',
                 '10000',
@@ -155,7 +166,7 @@ def getNewFig():
 def otrisovka(screen,color,korx,kory):
     for x in range(fig_w):
             for y in range(fig_h):
-               pygame.draw.rect(screen,a['color'], (korx, kory, block - 2, block - 2), 0, 3) 
+               pygame.draw.rect(screen,a['color'], (korx, kory, block-2 , block -2), 0, 3) 
 def figura(fig):
     figToDraw = figur[fig['shape']][fig['rotation']]
     for x in range(fig_w):
@@ -166,7 +177,7 @@ def masiv(mas, fig):
     for x in range(fig_w):
         for y in range(fig_h):
             if figur[fig['shape']][fig['rotation']][y][x] != '0':
-                ynew = y+(a['y'])//block-1
+                ynew = y+(a['y'])//block
                 if len(mas) <= ynew:
                     ynew -=1
                 mas[ynew].pop(x+(a['x'])//block)
@@ -175,129 +186,135 @@ def masiv(mas, fig):
 def masiva(mas,y,x,a,ya,xa):
     # print(a['shape']['rotation'][ya][xa])
     if figur[a['shape']][a['rotation']][ya][xa]=='1':
-        mas[y-1].pop(xa+a['x']//block)
-        mas[y-1].insert(xa+a['x']//block,'1')
+        mas[y-1].pop(xa+a['x']//block-1)
+        mas[y-1].insert(xa+a['x']//block-1,'1')
 
 a=getNewFig()
 field = get_field()
 #jfsdkjdj
-while end:
-    poc=20
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-    mainScreen.fill(mainScreenColor)
-    for i in range(len(field)):
-        for j in range(len(field[i])):
-            if field[i][j]=='0':
-                pygame.draw.rect(mainScreen, (10, 150, 180), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
-            if field[i][j]=='1':
-                pygame.draw.rect(mainScreen, (255, 255, 255), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
-    keys = pygame.key.get_pressed()
-    if incupcleva((a['x'])//block-1):
-        if keys[pygame.K_LEFT]:
-            if dviz>20:
-                a['x'] =a['x']+ (-1*SPEED)
-                dviz=0
-    if keys[pygame.K_UP]:
-        if pov>10:
-            if a['shape']=='I' or a['shape']=='S' or (a['shape']=='Z'):
-                if a['shape']=='I':
-                    if a['rotation']==1:
+def start_the_game():
+    global end,a,dviz,po,ppppppp,pov,endus
+    while end:
+        poc=20
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+        mainScreen.fill(mainScreenColor)
+        for i in range(len(field)):
+            for j in range(len(field[i])):
+                if field[i][j]=='0':
+                    pygame.draw.rect(mainScreen, (10, 150, 180), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
+                if field[i][j]=='1':
+                    pygame.draw.rect(mainScreen, (255, 255, 255), (48 * j + 2 * j, 48 * i + 2 * i, 48, 48))
+        keys = pygame.key.get_pressed()
+        if incupcleva((a['x'])//block-1):
+            if keys[pygame.K_LEFT]:
+                if dviz>20:
+                    a['x'] =a['x']+ (-1*SPEED)
+                    dviz=0
+            if keys[pygame.K_ESCAPE]:
+                menu()
+        if keys[pygame.K_UP]:
+            if pov>10:
+                if a['shape']=='I' or a['shape']=='S' or (a['shape']=='Z'):
+                    if a['shape']=='I':
+                        if a['rotation']==1:
+                            a['rotation']=0
+                        else:
+                            a['rotation']+=1
+                            if a['x']>=350:
+                                a['x']=300
+
+                            
+                    else:
+                        if a['rotation']==1:
+                            a['rotation']=0
+                            if a['x']==400:
+                                a['x']=350
+                        else:
+                            a['rotation']+=1
+                elif a['shape']=='O':
+                    abobobbb=1
+                elif a['shape']==']':
+                    if a['rotation']==3:
                         a['rotation']=0
                     else:
                         a['rotation']+=1
-                        if a['x']>=350:
-                            a['x']=300
-
-                        
-                else:
-                    if a['rotation']==1:
-                        a['rotation']=0
+                    if a['rotation']==1 or a['rotation']==3:
                         if a['x']==400:
                             a['x']=350
+                else:
+                    if a['rotation']==3:
+                        a['rotation']=0
                     else:
                         a['rotation']+=1
-            elif a['shape']=='O':
-                abobobbb=1
-            elif a['shape']==']':
-                if a['rotation']==3:
-                    a['rotation']=0
+                    if a['rotation']==0 or a['rotation']==2:
+                        if a['x']==400:
+                            a['x']=350
+                pov=0
+        if (a['shape']==']' and (a['rotation']==0 or a['rotation']==2)) or a['shape']=='O' or (a['shape']=='T' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='L' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3))   or (a['shape']=='J' and a['rotation']==1) or (a['shape']=='S' and a['rotation']==1) or (a['shape']=='Z' and a['rotation']==1):
+            if incupcpravo((a['x'])//block+2):
+                if keys[pygame.K_RIGHT]:
+                    if dviz>20:
+                        a['x'] +=SPEED
+                        dviz=0
+        if a['shape']=='I' and a['rotation']==0:
+            if incupcpravo((a['x'])//block+1):
+                if keys[pygame.K_RIGHT]:
+                    if dviz>20:
+                        a['x'] +=SPEED
+                        dviz=0
+        elif a['shape']=='I' and a['rotation']==1:
+            if incupcpravo((a['x'])//block+4):
+                if keys[pygame.K_RIGHT]:
+                    if dviz>20:
+                        a['x'] +=SPEED
+                        dviz=0
+        else:
+            if incupcpravo((a['x'])//block+3):
+                if keys[pygame.K_RIGHT]:
+                    if dviz>20:
+                        a['x'] +=SPEED
+                        dviz=0
+        dviz+=1
+        if keys[pygame.K_DOWN]:
+            poc=5
+        if po>poc:
+            if incupniz((a['y'])//block-3):
+                a['y']+=block
+                po=0
+        for i in range(fig_w):
+            for j in range(fig_h):
+                print(a['x']//block+i-2)
+                if not incupniz(a['y']//block+j) or field[a['y']//block+j][a['x']//block-2]=='1':
+                    masiva(field,a['y']//block+j,a['x']//block-2,a,j,i)
+                    ppppppp=1
+
+        if ppppppp!=0:
+            for h in range(len(field[1])-1):
+                if not field[2][h-1]=='1':
+                    a=getNewFig()
+                    ppppppp=0
+                    endus=0
                 else:
-                    a['rotation']+=1
-                if a['rotation']==1 or a['rotation']==3:
-                    if a['x']==400:
-                      a['x']=350
-            else:
-                if a['rotation']==3:
-                    a['rotation']=0
-                else:
-                    a['rotation']+=1
-                if a['rotation']==0 or a['rotation']==2:
-                    if a['x']==400:
-                        a['x']=350
-            pov=0
-    if (a['shape']==']' and (a['rotation']==0 or a['rotation']==2)) or a['shape']=='O' or (a['shape']=='T' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='L' and (a['rotation']==1 or a['rotation']==3)) or (a['shape']=='J' and (a['rotation']==1 or a['rotation']==3))   or (a['shape']=='J' and a['rotation']==1) or (a['shape']=='S' and a['rotation']==1) or (a['shape']=='Z' and a['rotation']==1):
-        if incupcpravo((a['x'])//block+2):
-            if keys[pygame.K_RIGHT]:
-                if dviz>20:
-                    a['x'] +=SPEED
-                    dviz=0
-    if a['shape']=='I' and a['rotation']==0:
-        if incupcpravo((a['x'])//block+1):
-            if keys[pygame.K_RIGHT]:
-                if dviz>20:
-                    a['x'] +=SPEED
-                    dviz=0
-    elif a['shape']=='I' and a['rotation']==1:
-        if incupcpravo((a['x'])//block+4):
-            if keys[pygame.K_RIGHT]:
-                if dviz>20:
-                    a['x'] +=SPEED
-                    dviz=0
-    else:
-        if incupcpravo((a['x'])//block+3):
-            if keys[pygame.K_RIGHT]:
-                if dviz>20:
-                    a['x'] +=SPEED
-                    dviz=0
-    dviz+=1
-    if keys[pygame.K_DOWN]:
-        poc=5
-    if po>poc:
-        if incupniz((a['y'])//block-3):
-            a['y']+=block
-            po=0
-    for i in range(fig_w):
-        for j in range(fig_h):
-            # print(i,j)
-            if not incupniz(a['y']//block+j) or field[a['y']//block+j][a['x']//block]=='1':
-                masiva(field,a['y']//block+j,a['x']//block,a,j,i)
-                ppppppp=1
-    if ppppppp!=0:
-        for h in range(len(field[1])-1):
-            if not field[2][h-1]=='1':
-                a=getNewFig()
-                ppppppp=0
-                endus=0
-            else:
-                endus=True
-    url=0
-    ppppppp=0
-    
-    for i in range(len(field)):
-        for j in range(cup_w):
-            if field[i-1]==['1']*10:
-                for pushDownY in range(cup_h, 0, -1):
+                    endus=True
+        url=0
+        ppppppp=0
+
+        for i in range(len(field)):
+            for j in range(cup_w):
+                if field[i-1]==['1']*10:
+                    for pushDownY in range(cup_h, 0, -1):
+                        for x in range(cup_w):
+                            field[pushDownY-1][x-1] = field[pushDownY-2][x-1]
                     for x in range(cup_w):
-                        field[pushDownY-1][x-1] = field[pushDownY-2][x-1]
-                for x in range(cup_w):
-                        field[0][x-1] = '0'
-                url += 1
-    pov+=1
-    po+=1
-    figura(a)
-    if endus==True:
-        end=endgame()
-    pygame.display.flip()
-    clock.tick(60)
+                            field[0][x-1] = '0'
+                    url += 1
+        pov+=1
+        po+=1
+        figura(a)
+        if endus==True:
+            end=endgame()
+        pygame.display.flip()
+        clock.tick(60)
+start_the_game()
