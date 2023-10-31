@@ -1,0 +1,68 @@
+div {
+    width:  50%;
+    height: 50%;
+    float: left;
+    position: relative;
+}
+#d1{
+    background-color: deepskyblue;
+}
+#d2{
+    background-color: darkgreen;
+}
+#d3{
+    background-color: darkcyan;
+}
+#d4{
+    background-color: darkred;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0 ;
+    /*убираем пустые промежутки между ячейками*/
+    width: max-content;
+    height: auto;
+    font-family: sans-serif;
+    z-index: auto;
+    text-align: left;
+    margin-bottom: auto;
+}
+tbody {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#t1 {
+    background-color: green;
+}
+#tr2{
+    height: 30%;
+}
+th {
+
+}
+td {
+    width: 1px ;
+}
+
+td:first-child {
+    width: 2%;
+}
+tr {
+
+
+}
+th, td {
+    padding:1px;
+}
+
+caption {
+    caption-side: bottom;
+    text-align: left ;
+    padding: 2px 1px;
+    font-size: 10px;
+}
+h1 {
+    text-align:left ;
+}
